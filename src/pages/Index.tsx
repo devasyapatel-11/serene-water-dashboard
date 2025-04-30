@@ -6,6 +6,7 @@ import WaterUsageChart from "@/components/dashboard/WaterUsageChart";
 import StatusCard from "@/components/dashboard/StatusCard";
 import RequestsTable from "@/components/dashboard/RequestsTable";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import WaterVisualization from "@/components/3d/WaterVisualization";
 
 const Index = () => {
   // Sample data for charts and metrics
@@ -31,6 +32,13 @@ const Index = () => {
     { name: "Sector D", usage: 2700 },
     { name: "Sector E", usage: 4100 },
     { name: "Sector F", usage: 3300 }
+  ];
+
+  const reservoirData = [
+    { name: "Main", value: 65, color: "#4dabf5" },
+    { name: "Sector A", value: 85, color: "#33c3f0" },
+    { name: "Sector B", value: 45, color: "#f87171" },
+    { name: "Sector C", value: 72, color: "#60a5fa" }
   ];
 
   const recentRequests = [
@@ -181,6 +189,16 @@ const Index = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Real-time Reservoir Levels</CardTitle>
+          <CardDescription>3D visualization of current water levels</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <WaterVisualization data={reservoirData} />
+        </CardContent>
+      </Card>
     </div>
   );
 };
