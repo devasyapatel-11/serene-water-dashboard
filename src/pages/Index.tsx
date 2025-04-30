@@ -39,7 +39,7 @@ const Index = () => {
       customerId: "CUST-123",
       customerName: "John Wilson",
       requestType: "New Connection",
-      status: "pending",
+      status: "pending" as const,
       date: "2025-04-25",
       locality: "Sector A"
     },
@@ -48,7 +48,7 @@ const Index = () => {
       customerId: "CUST-456",
       customerName: "Sarah Johnson",
       requestType: "Maintenance",
-      status: "in-progress",
+      status: "in-progress" as const,
       date: "2025-04-24",
       locality: "Sector B"
     },
@@ -57,7 +57,7 @@ const Index = () => {
       customerId: "CUST-789",
       customerName: "Michael Brown",
       requestType: "Disconnection",
-      status: "resolved",
+      status: "resolved" as const,
       date: "2025-04-22",
       locality: "Sector C"
     },
@@ -66,7 +66,7 @@ const Index = () => {
       customerId: "CUST-101",
       customerName: "Emma Davis",
       requestType: "Water Quality Issue",
-      status: "in-progress",
+      status: "in-progress" as const,
       date: "2025-04-21",
       locality: "Sector B"
     },
@@ -75,7 +75,7 @@ const Index = () => {
       customerId: "CUST-112",
       customerName: "Robert Garcia",
       requestType: "Billing Dispute",
-      status: "pending",
+      status: "pending" as const,
       date: "2025-04-20",
       locality: "Sector D"
     }

@@ -15,7 +15,6 @@ import {
   Users,
   Database,
   Gauge,
-  ChartLine,
   Calendar,
   Inbox,
   Wrench,
@@ -55,7 +54,7 @@ export default function Sidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.path}>
-                  <SidebarMenuButton asChild active={location.pathname === item.path}>
+                  <SidebarMenuButton asChild data-state={location.pathname === item.path ? "active" : undefined}>
                     <Link to={item.path} className="flex items-center gap-2">
                       <item.icon className="w-5 h-5" />
                       <span>{item.title}</span>

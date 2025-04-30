@@ -11,7 +11,7 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-interface Request {
+export interface Request {
   id: string;
   customerId: string;
   customerName: string;
