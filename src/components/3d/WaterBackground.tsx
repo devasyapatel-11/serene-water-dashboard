@@ -1,7 +1,6 @@
 
 import { useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Wave geometry for the water surface
@@ -134,7 +133,6 @@ function Scene() {
       <WaveSurface />
       <WaterDroplets />
       <CameraController />
-      <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
     </>
   );
 }
