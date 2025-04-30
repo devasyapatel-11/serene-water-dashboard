@@ -18,8 +18,7 @@ import {
   Calendar,
   Inbox,
   Wrench,
-  MessageSquare,
-  Droplet
+  MessageSquare
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -42,8 +41,8 @@ export default function Sidebar() {
     <SidebarComponent>
       <div className="flex items-center h-16 px-4 border-b border-border/40">
         <div className="flex items-center gap-2 font-semibold">
-          <div className="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center text-white">
-            <Droplet className="w-5 h-5" />
+          <div className="w-8 h-8 bg-water-400 rounded-md flex items-center justify-center text-white">
+            <div className="w-4 h-4 animate-water-flow">💧</div>
           </div>
           <span className="text-lg">WaterSystem</span>
         </div>
