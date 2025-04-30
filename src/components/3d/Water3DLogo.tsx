@@ -18,7 +18,7 @@ function WaterDrop(props: any) {
     <mesh {...props} ref={meshRef}>
       <sphereGeometry args={[1, 32, 32]} />
       <meshStandardMaterial 
-        color="#33C3F0" 
+        color="#33C3F0"
         transparent
         opacity={0.7}
         roughness={0.1}
@@ -35,7 +35,7 @@ interface WaterLogoProps {
 export function Water3DLogo({ className = "" }: WaterLogoProps) {
   return (
     <div className={`w-10 h-10 ${className}`}>
-      <Canvas>
+      <Canvas dpr={[1, 2]}>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
