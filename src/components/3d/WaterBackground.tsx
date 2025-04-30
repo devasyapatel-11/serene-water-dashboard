@@ -6,21 +6,15 @@ import * as THREE from 'three';
 // Wave geometry for the water surface
 function WaveSurface() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const geometryRef = useRef<THREE.PlaneGeometry | null>(null);
+  const geometry = useRef<THREE.PlaneGeometry | null>(null);
   
   useEffect(() => {
-    geometryRef.current = new THREE.PlaneGeometry(20, 20, 40, 40);
-    
-    return () => {
-      if (geometryRef.current) {
-        geometryRef.current.dispose();
-      }
-    };
+    geometry.current = new THREE.PlaneGeometry(20, 20, 40, 40);
   }, []);
   
   useFrame(({ clock }) => {
-    if (meshRef.current && geometryRef.current) {
-      const position = geometryRef.current.attributes.position;
+    if (meshRef.current && geometry.current) {
+      const position = geometry.current.attributes.position;
       const time = clock.getElapsedTime() * 0.4;
       
       for (let i = 0; i < position.count; i++) {
@@ -39,14 +33,14 @@ function WaveSurface() {
   
   return (
     <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
-      {geometryRef.current && <primitive object={geometryRef.current} attach="geometry" />}
+      {geometry.current && <primitive object={geometry.current} attach="geometry" />}
       <meshPhongMaterial 
         color="#3399ff" 
         shininess={80} 
-        transparent={true}
+        transparent
         opacity={0.7} 
         side={THREE.DoubleSide} 
-        flatShading={true}
+        flatShading
       />
     </mesh>
   );
@@ -71,10 +65,6 @@ function WaterDroplets() {
         speed: 0.02 + Math.random() * 0.03
       });
     }
-    
-    return () => {
-      particles.current = [];
-    };
   }, []);
   
   useFrame(() => {
@@ -106,7 +96,7 @@ function WaterDroplets() {
       {Array(count).fill(null).map((_, i) => (
         <mesh key={i} position={[0, 0, 0]}>
           <sphereGeometry args={[0.05, 8, 8]} />
-          <meshPhongMaterial color="#a0d8ef" transparent={true} opacity={0.7} />
+          <meshPhongMaterial color="#a0d8ef" transparent opacity={0.7} />
         </mesh>
       ))}
     </group>
@@ -153,7 +143,7 @@ interface WaterBackgroundProps {
 export default function WaterBackground({ className = "" }: WaterBackgroundProps) {
   return (
     <div className={`fixed inset-0 pointer-events-none z-[-1] opacity-50 ${className}`}>
-      <Canvas dpr={[1, 2]}>
+      <Canvas>
         <Scene />
       </Canvas>
     </div>

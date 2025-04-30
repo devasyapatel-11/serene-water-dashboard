@@ -35,7 +35,7 @@ interface WaterLogoProps {
 export function Water3DLogo({ className = "" }: WaterLogoProps) {
   return (
     <div className={`w-10 h-10 ${className}`}>
-      <Canvas dpr={[1, 2]}>
+      <Canvas>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
