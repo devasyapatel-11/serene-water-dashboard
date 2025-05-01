@@ -12,9 +12,18 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import WaterLevelChart from "@/components/dashboard/WaterLevelChart";
-import { Bell, AlertTriangle } from "lucide-react";
+import { Bell, AlertTriangle, Droplet, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import UpdateWaterLevelForm from "@/components/reservoirs/UpdateWaterLevelForm";
+import GenerateBillsForm from "@/components/billing/GenerateBillsForm";
 
 interface Reservoir {
   id: string;
@@ -32,7 +41,7 @@ interface Reservoir {
 
 const Reservoirs = () => {
   const { toast } = useToast();
-  const [reservoirs] = useState<Reservoir[]>([
+  const [reservoirs, setReservoirs] = useState<Reservoir[]>([
     {
       id: "RES-001",
       name: "North Ridge Reservoir",
@@ -94,12 +103,40 @@ const Reservoirs = () => {
       ]
     }
   ]);
+  
+  // Dialog state for water level update
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [selectedReservoir, setSelectedReservoir] = useState<Reservoir | null>(null);
+  
+  // Dialog state for generating bills
+  const [generateBillsDialogOpen, setGenerateBillsDialogOpen] = useState(false);
 
   const handleAlertClick = (reservoirName: string) => {
     toast({
       title: "Alert Settings Updated",
       description: `Alert threshold updated for ${reservoirName}.`
     });
+  };
+
+  // Handle updating reservoir water level
+  const handleUpdateLevel = (id: string, newLevel: number) => {
+    setReservoirs(prev => prev.map(reservoir => 
+      reservoir.id === id ? {
+        ...reservoir,
+        currentLevel: newLevel,
+        lastUpdated: new Date().toLocaleString(),
+        // Add a new history point
+        history: [
+          ...reservoir.history,
+          { name: `Week ${reservoir.history.length + 1}`, value: Math.round((newLevel / reservoir.capacity) * 100) }
+        ].slice(-4) // Keep only the last 4 weeks
+      } : reservoir
+    ));
+  };
+
+  const openUpdateDialog = (reservoir: Reservoir) => {
+    setSelectedReservoir(reservoir);
+    setUpdateDialogOpen(true);
   };
 
   const getStatusBadge = (status: 'operational' | 'maintenance' | 'critical') => {
@@ -119,7 +156,18 @@ const Reservoirs = () => {
 
   return (
     <div className="space-y-6 pb-8 pt-2 animate-fade-in">
-      <h1 className="text-3xl font-bold">Reservoir Management</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Reservoir Management</h1>
+        <div className="flex gap-3">
+          <Button
+            onClick={() => setGenerateBillsDialogOpen(true)}
+            className="gap-2"
+          >
+            <FileText className="h-4 w-4" />
+            Generate Bills
+          </Button>
+        </div>
+      </div>
       
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
@@ -162,8 +210,19 @@ const Reservoirs = () => {
                       </div>
                     </div>
                   </CardContent>
-                  <CardFooter className="pt-1 text-xs text-muted-foreground">
-                    Updated: {reservoir.lastUpdated}
+                  <CardFooter className="pt-1 flex justify-between items-center">
+                    <span className="text-xs text-muted-foreground">
+                      Updated: {reservoir.lastUpdated}
+                    </span>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="gap-1"
+                      onClick={() => openUpdateDialog(reservoir)}
+                    >
+                      <Droplet className="h-3 w-3" />
+                      Update Level
+                    </Button>
                   </CardFooter>
                 </Card>
               );
@@ -301,6 +360,43 @@ const Reservoirs = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      
+      {/* Dialog for updating water level */}
+      <Dialog open={updateDialogOpen} onOpenChange={setUpdateDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Update Water Level</DialogTitle>
+            <DialogDescription>
+              Adjust the current water level for this reservoir.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedReservoir && (
+            <UpdateWaterLevelForm
+              reservoirId={selectedReservoir.id}
+              reservoirName={selectedReservoir.name}
+              currentLevel={selectedReservoir.currentLevel}
+              capacity={selectedReservoir.capacity}
+              onClose={() => setUpdateDialogOpen(false)}
+              onUpdateLevel={handleUpdateLevel}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+      
+      {/* Dialog for generating bills */}
+      <Dialog open={generateBillsDialogOpen} onOpenChange={setGenerateBillsDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Generate Bills</DialogTitle>
+            <DialogDescription>
+              Create bills for water usage by sector.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <GenerateBillsForm onClose={() => setGenerateBillsDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
