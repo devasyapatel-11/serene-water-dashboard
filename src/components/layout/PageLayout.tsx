@@ -12,8 +12,8 @@ interface PageLayoutProps {
 export default function PageLayout({ children }: PageLayoutProps) {
   return (
     <SidebarProvider>
-      <WaterBackground />
       <div className="min-h-screen flex w-full">
+        <WaterBackground />
         <Sidebar />
         <div className="flex-1 flex flex-col backdrop-blur-sm">
           <Navbar />

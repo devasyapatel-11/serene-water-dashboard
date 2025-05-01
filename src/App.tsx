@@ -16,7 +16,15 @@ import Maintenance from "./pages/Maintenance";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+// Create a QueryClient with default options that don't rely on a backend
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false
+    }
+  }
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

@@ -18,7 +18,14 @@ export function Water3DLogo({ className = "" }: WaterLogoProps) {
         strokeLinejoin="round" 
         className="w-6 h-6 text-white"
       >
-        <path d="M12 2v6M12 22v-6M4.93 10.93l1.41 1.41M19.07 10.93l-1.41 1.41M2 18h2M20 18h2M20 14h2M2 14h2M14 22h2M8 22h2M14 2h2M8 2h2" />
+        <path d="M12 2L8 7H16L12 2Z" />
+        <path d="M8 7L4 12H12L8 7Z" />
+        <path d="M16 7L12 12H20L16 7Z" />
+        <path d="M4 12L2 14H10L4 12Z" />
+        <path d="M12 12L10 14H14L12 12Z" />
+        <path d="M20 12L14 14H22L20 12Z" />
+        <path d="M2 14L2 17H22L22 14L2 14Z" />
+        <path d="M2 17L0 22H24L22 17L2 17Z" />
       </svg>
     </div>
   );
