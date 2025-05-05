@@ -11,9 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { ProfileDialog } from "@/components/settings/ProfileDialog";
+import { SystemPreferencesDialog } from "@/components/settings/SystemPreferencesDialog";
 
 export default function Navbar() {
   const { toast } = useToast();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:px-6">
@@ -68,8 +73,8 @@ export default function Navbar() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Settings</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>System Preferences</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setProfileOpen(true)}>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setPreferencesOpen(true)}>System Preferences</DropdownMenuItem>
             <DropdownMenuItem>Notifications</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -85,7 +90,7 @@ export default function Navbar() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Admin User</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setProfileOpen(true)}>Profile</DropdownMenuItem>
             <DropdownMenuItem>Help</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => {
@@ -99,6 +104,9 @@ export default function Navbar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
+      <SystemPreferencesDialog open={preferencesOpen} onOpenChange={setPreferencesOpen} />
     </header>
   );
 }
