@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal, Plus, Search, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AddCustomerDialog } from "@/components/customers/AddCustomerDialog";
 
 interface Customer {
   id: string;
@@ -38,7 +39,7 @@ interface Customer {
   status: "active" | "inactive" | "pending";
 }
 
-const customersData: Customer[] = [
+const initialCustomersData: Customer[] = [
   {
     id: "CUST-001",
     name: "John Wilson",
@@ -113,6 +114,8 @@ const customersData: Customer[] = [
 
 export default function Customers() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
+  const [customersData, setCustomersData] = useState<Customer[]>(initialCustomersData);
   const { toast } = useToast();
   
   const filteredCustomers = customersData.filter(customer => 
@@ -134,11 +137,18 @@ export default function Customers() {
     });
   };
 
+  const handleAddCustomer = (newCustomer: Customer) => {
+    setCustomersData(prev => [newCustomer, ...prev]);
+  };
+
   return (
     <div className="space-y-6 pb-8 pt-2 animate-fade-in">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Customer Directory</h1>
-        <Button className="flex gap-2 items-center">
+        <Button 
+          className="flex gap-2 items-center" 
+          onClick={() => setIsAddCustomerOpen(true)}
+        >
           <UserPlus className="h-4 w-4" />
           <span>Add Customer</span>
         </Button>
@@ -219,6 +229,12 @@ export default function Customers() {
           </Table>
         </CardContent>
       </Card>
+      
+      <AddCustomerDialog 
+        open={isAddCustomerOpen} 
+        onOpenChange={setIsAddCustomerOpen}
+        onCustomerAdded={handleAddCustomer}
+      />
     </div>
   );
 }
